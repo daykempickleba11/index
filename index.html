@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <title>Đi chơi Trung Thu với mình nha 🏮</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <script src="config.js"></script>
+  </head>
+
+  <body>
+    <main class="wrap">
+      <section class="card" style="padding:18px 16px 22px;">
+        <div class="title">
+          <span class="pink" id="partnerName">Cậu</span>, Trung Thu này đi chơi với mình nha? 🌕🏮
+        </div>
+        <p class="subtitle">Mình có một kế hoạch nhỏ xíu, nhưng sẽ vui hơn nhiều nếu có cậu 🤍</p>
+
+        <div class="row">
+          <button class="btn btnPrimary" id="yesBtn" onclick="location.href='thankyou.html'">Đi chứ 💖</button>
+          <button class="btn btnGhost" id="noButton">Hông 🙈</button>
+        </div>
+
+        <img src="cat.gif" alt="mèo dễ thương" class="imgHero" />
+        <div class="tip">Thử bấm “Hông” xem 😆</div>
+      </section>
+    </main>
+
+    <script>
+      let lastTouchEnd = 0;
+      document.addEventListener(
+        "touchend",
+        function (event) {
+          const now = Date.now();
+          if (now - lastTouchEnd <= 300) event.preventDefault();
+          lastTouchEnd = now;
+        },
+        { passive: false }
+      );
+
+      const cfg = window.VALENTINE_CONFIG || {};
+      const partner = cfg.partnerName || "Cậu";
+      document.getElementById("partnerName").textContent = partner;
+
+      const noButton = document.getElementById("noButton");
+      const yesBtn = document.getElementById("yesBtn");
+
+      noButton.addEventListener("click", () => {
+        const current = parseFloat(getComputedStyle(yesBtn).fontSize);
+        yesBtn.style.fontSize = current + 4 + "px";
+
+        const icons = ["🏮", "🌕", "✨", "💖", "🥮"];
+        for (let i = 0; i < 7; i++) {
+          const h = document.createElement("div");
+          h.className = "floatHeart";
+          h.textContent = icons[Math.floor(Math.random() * icons.length)];
+          h.style.left = Math.random() * 100 + "vw";
+          h.style.fontSize = 14 + Math.random() * 18 + "px";
+          h.style.animationDelay = Math.random() * 0.4 + "s";
+          document.body.appendChild(h);
+          setTimeout(() => h.remove(), 3500);
+        }
+      });
+    </script>
+  </body>
+</html>

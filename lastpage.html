@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kèo Trung Thu của tụi mình 🏮</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <script src="config.js"></script>
+    <style>
+      body{ overflow-x:hidden; }
+      .flowerField{
+        position: fixed; inset: 0; z-index: 0; pointer-events:none;
+        background:
+          radial-gradient(18px 18px at 8% 86%, rgba(231,111,81,.22), transparent 60%),
+          radial-gradient(16px 16px at 16% 78%, rgba(244,162,97,.22), transparent 60%),
+          radial-gradient(22px 22px at 28% 92%, rgba(231,111,81,.18), transparent 60%),
+          radial-gradient(18px 18px at 40% 80%, rgba(244,162,97,.22), transparent 60%),
+          radial-gradient(20px 20px at 55% 90%, rgba(231,111,81,.18), transparent 60%),
+          radial-gradient(16px 16px at 70% 82%, rgba(244,162,97,.22), transparent 60%),
+          radial-gradient(22px 22px at 84% 92%, rgba(231,111,81,.18), transparent 60%),
+          radial-gradient(18px 18px at 92% 78%, rgba(244,162,97,.22), transparent 60%),
+          radial-gradient(1200px 600px at 50% 0%, #ffe0b2, #fff8e7);
+        animation: drift 10s ease-in-out infinite alternate;
+      }
+      @keyframes drift{ from{ filter:saturate(1.05); transform:translateY(0);} to{ filter:saturate(1.18); transform:translateY(-10px);} }
+      .content{ position: relative; z-index: 1; }
+      .recap{ padding:16px 14px; margin-top:12px; text-align:left; border-radius:18px; background:rgba(255,255,255,.72); border:1px solid rgba(231,111,81,.20); }
+      .recap h2{ margin:0 0 12px; font-size:18px; font-weight:1000; }
+      .line{ display:flex; gap:10px; align-items:baseline; padding:9px 0; border-bottom:1px solid rgba(231,111,81,.10); }
+      .line:last-child{ border-bottom:none; }
+      .label{ width:108px; font-size:12px; color:rgba(47,34,34,.55); text-transform:uppercase; letter-spacing:.6px; flex:0 0 auto; }
+      .val{ font-size:15px; font-weight:900; color:rgba(47,34,34,.88); }
+      .loveNote{ margin-top:12px; font-size:14px; color:rgba(47,34,34,.70); }
+    </style>
+  </head>
+
+  <body>
+    <div class="flowerField"></div>
+
+    <main class="wrap content">
+      <section class="card" style="padding:18px 16px 22px;">
+        <div class="title">Hẹn cậu một tối Trung Thu thật vui nha 🏮</div>
+        <p class="subtitle">Không cần kế hoạch quá hoàn hảo, có cậu đi cùng là được rồi. 🤍</p>
+
+        <section class="recap">
+          <h2>Kèo của tụi mình ✨</h2>
+          <div class="line"><div class="label">Hoạt động</div><div class="val" id="r1">—</div></div>
+          <div class="line"><div class="label">Ngày</div><div class="val" id="r2">—</div></div>
+          <div class="line"><div class="label">Món ăn</div><div class="val" id="r3">—</div></div>
+          <div class="line"><div class="label">Món ngọt</div><div class="val" id="r4">—</div></div>
+          <div class="loveNote">Bấm “Sao chép kèo” rồi gửi lại cho người đã rủ cậu nha 😆💖</div>
+        </section>
+
+        <div style="margin-top:16px;">
+          <button class="btn btnPrimary btnFull" id="shareBtn">Sao chép kèo của tụi mình 💌</button>
+        </div>
+
+        <div style="margin-top:10px;">
+          <button class="btn btnGhost btnFull" id="finalBtn" onclick="location.href='index.html'">Hẹn cậu Trung Thu nha 🌕🏮</button>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const cfg = window.VALENTINE_CONFIG || {};
+
+      const online = localStorage.getItem('online_choice') || '—';
+      const when = localStorage.getItem('online_when') || 'Ngày nào cậu rảnh';
+      const food = localStorage.getItem('food_choice') || '—';
+      const dessert = localStorage.getItem('dessert_choice') || localStorage.getItem('dessertChoice') || '—';
+
+      document.getElementById('r1').textContent = online;
+      document.getElementById('r2').textContent = when;
+      document.getElementById('r3').textContent = food;
+      document.getElementById('r4').textContent = dessert;
+
+      const shareBtn = document.getElementById('shareBtn');
+      const finalBtn = document.getElementById('finalBtn');
+
+      shareBtn.textContent = cfg.shareButtonText || shareBtn.textContent;
+      finalBtn.textContent = cfg.finalButtonText || finalBtn.textContent;
+
+      shareBtn.addEventListener('click', async () => {
+        const msg =
+`Kèo Trung Thu của tụi mình 🏮🌕
+Hoạt động: ${online}
+Ngày: ${when}
+Món ăn: ${food}
+Món ngọt: ${dessert}
+
+${cfg.shareMessageFooter || ''}`.trim();
+
+        try {
+          await navigator.clipboard.writeText(msg);
+          shareBtn.textContent = cfg.shareCopiedText || 'Đã sao chép ✅';
+          setTimeout(() => (shareBtn.textContent = cfg.shareButtonText || 'Sao chép kèo của tụi mình 💌'), 2200);
+        } catch {
+          prompt('Sao chép đoạn này rồi gửi cho mình nha:', msg);
+        }
+      });
+
+      const icons = ['🏮','🌕','✨','🥮','💖','⭐'];
+      for(let i=0;i<30;i++){
+        const h = document.createElement('div');
+        h.className = 'floatHeart';
+        h.textContent = icons[Math.floor(Math.random()*icons.length)];
+        h.style.left = (Math.random()*100) + 'vw';
+        h.style.fontSize = (14 + Math.random()*22) + 'px';
+        h.style.animationDelay = (Math.random()*1.6) + 's';
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(), 5000);
+      }
+    </script>
+  </body>
+</html>
