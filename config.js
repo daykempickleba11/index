@@ -69,6 +69,12 @@ window.VALENTINE_CONFIG = {
       "title": "Chè",
       "emoji": "🍧",
       "subtitle": "Mát mát rồi đi dạo"
+    },
+    {
+      "title": "Vị ngọt trên đôi môi anh",
+      "emoji": "💋",
+      "subtitle": "Option này mới được đi tiếp nha 😏",
+      "required": true
     }
   ],
   "finalButtonText": "Hẹn cậu Trung Thu nha 🌕🏮",
