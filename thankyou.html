@@ -1,60 +1,25 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Yayyy 💖</title>
-    <link rel="stylesheet" href="css/theme.css" />
-    <script src="config.js"></script>
-    <style>
-      .bigThanks{ font-size:34px; font-weight:1000; margin:6px 0 8px; }
-      .spark{ font-size:26px; margin-bottom:8px; }
-      .confetti{ position:fixed; top:-20px; left:0; right:0; pointer-events:none; z-index:999; }
-      .piece{ position:absolute; top:-24px; animation:drop 2.6s ease-in forwards; opacity:.95; }
-      @keyframes drop{
-        0%{ transform:translateY(0) rotate(0deg); opacity:0; }
-        12%{ opacity:1; }
-        100%{ transform:translateY(115vh) rotate(420deg); opacity:0; }
-      }
-    </style>
-  </head>
-
-  <body>
-    <main class="wrap">
-      <section class="card" style="padding:18px 16px 22px;">
-        <div class="spark">🏮✨🌕</div>
-        <div class="bigThanks">Yayyy 💖</div>
-        <p class="subtitle">Vậy là cậu đồng ý rồi nha 😭</p>
-
-        <div style="margin-top:14px;">
-          <div class="title" style="font-size:26px; margin-top:18px;">Khoan—đừng thoát vội 😳</div>
-          <p class="subtitle">Chọn thử tụi mình sẽ đi đâu, ăn gì nha 🏮</p>
-
-          <button class="btn btnPrimary btnFull" style="margin-top:14px;" onclick="location.href='date.html'">
-            Lên kèo Trung Thu thôi 💌
-          </button>
-        </div>
-
-        <img src="hug.gif" onerror="this.style.display='none'" alt="hai bé ôm nhau" class="imgHero" />
-        <div class="tip" style="margin-top:12px;">Hehe, còn vài câu nữa thôi 🥹</div>
-      </section>
-    </main>
-
-    <div class="confetti" id="confetti"></div>
-
-    <script>
-      const confetti = document.getElementById("confetti");
-      const emojis = ["🏮","✨","💖","🌕","🥮"];
-      for(let i=0;i<26;i++){
-        const p = document.createElement("div");
-        p.className = "piece";
-        p.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-        p.style.left = (Math.random()*100) + "vw";
-        p.style.fontSize = (14 + Math.random()*18) + "px";
-        p.style.animationDelay = (Math.random()*0.6) + "s";
-        confetti.appendChild(p);
-        setTimeout(()=>p.remove(), 2800);
-      }
-    </script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yayyy 💖</title>
+  <link rel="stylesheet" href="css/theme.css" />
+  <script src="config.js"></script>
+  <script src="effects.js"></script>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card" style="padding:24px 18px 26px;">
+      <div style="font-size:36px">🏮✨🌕✨🏮</div>
+      <div class="title" style="font-size:clamp(34px,6vw,50px)">Yayyy, chốt kèo rồi nha 💖</div>
+      <p class="subtitle">Anh biết mà… em đâu nỡ từ chối anh 😌</p>
+      <div class="secretNote"><b>Thông báo:</b> Hệ thống vừa ghi nhận một người cực kỳ dễ thương đã đồng ý đi Trung Thu với anh. Không hỗ trợ hoàn tác 😭💘</div>
+      <button class="btn btnPrimary btnFull glow" style="margin-top:18px" onclick="location.href='date.html'">Lên kèo Trung Thu thôi 💌</button>
+      <img src="hug.gif" onerror="this.style.display='none'" alt="hai bé ôm nhau" class="imgHero" />
+      <div class="tip">Còn vài bước nữa thôi, sến chưa hết đâu 🥹</div>
+    </section>
+  </main>
+  <script>LoveFX.progress(20,'Đồng ý rồi');LoveFX.burst(44);LoveFX.chime('big');setTimeout(()=>LoveFX.burst(20,['💖','✨','🌕']),900)</script>
+</body>
 </html>

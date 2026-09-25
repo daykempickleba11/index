@@ -1,132 +1,54 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Món ngọt 🍰</title>
-    <link rel="stylesheet" href="css/theme.css" />
-    <script src="config.js"></script>
-    <style>
-      .requiredOption{
-        grid-column: 1 / -1;
-        position: relative;
-        overflow: hidden;
-        border-color: rgba(231,111,81,.42);
-        background: linear-gradient(135deg, rgba(255,255,255,.94), rgba(255,236,225,.96));
-      }
-      .requiredOption::after{
-        content: "PHẢI CHỌN 😏";
-        position: absolute;
-        top: 9px;
-        right: 11px;
-        font-size: 10px;
-        font-weight: 1000;
-        letter-spacing: .5px;
-        color: #e76f51;
-        background: rgba(255,255,255,.86);
-        border: 1px solid rgba(231,111,81,.22);
-        border-radius: 999px;
-        padding: 5px 8px;
-      }
-      .requiredOption.active{
-        box-shadow: 0 10px 28px rgba(231,111,81,.20);
-      }
-      .tease{
-        min-height: 22px;
-        margin-top: 10px;
-        font-size: 13px;
-        font-weight: 800;
-        color: #d85f43;
-        text-align: center;
-      }
-      .nudge{
-        animation: nudge .38s ease-in-out;
-      }
-      @keyframes nudge{
-        0%,100%{ transform: translateX(0); }
-        25%{ transform: translateX(-7px); }
-        50%{ transform: translateX(7px); }
-        75%{ transform: translateX(-4px); }
-      }
-    </style>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Món ngọt 🍰</title>
+  <link rel="stylesheet" href="css/theme.css" />
+  <script src="config.js"></script>
+  <script src="effects.js"></script>
+  <style>
+    .requiredOption{grid-column:1/-1;position:relative;overflow:hidden;border-color:rgba(255,79,123,.48);background:linear-gradient(135deg,#fff,#fff0f5);animation:softPulse 1.8s ease-in-out infinite}
+    .requiredOption::after{content:"OPTION ĐÚNG 💋";position:absolute;top:9px;right:11px;font-size:10px;font-weight:1000;letter-spacing:.5px;color:#ff4f7b;background:rgba(255,255,255,.9);border:1px solid rgba(255,79,123,.24);border-radius:999px;padding:5px 8px}
+    @keyframes softPulse{50%{box-shadow:0 0 0 8px rgba(255,79,123,.06),0 18px 34px rgba(255,79,123,.12)}}
+    .tease{min-height:24px;margin-top:10px;font-size:13px;font-weight:900;color:#d85f62;text-align:center}
+    .nudge{animation:nudge .38s ease-in-out!important}@keyframes nudge{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-4px)}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card" style="padding:22px 18px;">
+      <div class="title">Rồi tới phần quan trọng nhất… món ngọt 🍰</div>
+      <p class="subtitle">Câu này có đáp án đúng nha. Chọn cẩn thận 😌</p>
+      <div class="grid" id="grid"></div>
+      <div class="tease" id="tease"></div>
+      <div style="margin-top:8px"><span class="pill" id="picked">Đã chọn: chạm một lựa chọn ✨</span></div>
+      <button class="btn btnPrimary btnFull" id="next" disabled style="margin-top:16px">Xem kèo của tụi mình 💖</button>
+    </section>
+  </main>
 
-  <body>
-    <main class="wrap">
-      <section class="card" style="padding:18px 16px 18px;">
-        <div class="title">Thêm chút ngọt ngào nha 🍰</div>
-        <p class="subtitle">Chọn món kết thúc cho buổi đi chơi Trung Thu.</p>
-
-        <div class="grid" id="grid"></div>
-        <div class="tease" id="tease"></div>
-
-        <div style="margin-top:8px;"><span class="pill" id="picked">Đã chọn: chạm một lựa chọn ✨</span></div>
-
-        <div style="margin-top:14px;">
-          <button class="btn btnPrimary btnFull" id="next" disabled>Xem kèo của tụi mình 💖</button>
-        </div>
-      </section>
-    </main>
-
-    <script>
-      const cfg = window.VALENTINE_CONFIG || {};
-      const grid = document.getElementById('grid');
-      const options = Array.isArray(cfg.dessertOptions) && cfg.dessertOptions.length ? cfg.dessertOptions : [];
-
-      grid.innerHTML = options.map((o, idx) => `
-        <div class="option ${o.required ? 'requiredOption' : ''}" data-index="${idx}" data-value="${o.title} ${o.emoji}" data-required="${o.required ? '1' : '0'}">
-          <div class="optionTitle">${o.title} ${o.emoji}</div>
-          <p class="optionText">${o.subtitle || ''}</p>
-        </div>
-      `).join('');
-
-      const items = document.querySelectorAll('.option');
-      const requiredItem = document.querySelector('.requiredOption');
-      const picked = document.getElementById('picked');
-      const tease = document.getElementById('tease');
-      const next = document.getElementById('next');
-      let choice = '';
-
-      function nudgeRequired(){
-        if (!requiredItem) return;
-        requiredItem.classList.remove('nudge');
-        void requiredItem.offsetWidth;
-        requiredItem.classList.add('nudge');
-      }
-
-      items.forEach(i => {
-        i.addEventListener('click', () => {
-          const isRequired = i.dataset.required === '1';
-
-          if (!isRequired) {
-            items.forEach(x => x.classList.remove('active'));
-            choice = '';
-            next.disabled = true;
-            picked.textContent = 'Chưa được tính đâu nha 😏';
-            tease.textContent = 'Không được chọn đường khác đâu 😌 Phải bấm “Vị ngọt trên đôi môi anh” mới đi tiếp 💋';
-            nudgeRequired();
-            if (requiredItem) requiredItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            return;
-          }
-
-          items.forEach(x => x.classList.remove('active'));
-          i.classList.add('active');
-          choice = i.dataset.value;
-          picked.textContent = 'Đã chọn: ' + choice;
-          tease.textContent = 'Ngoan 😏 Chốt món ngọt này nha 💖';
-          next.disabled = false;
-        });
-      });
-
-      next.addEventListener('click', () => {
-        if (!choice || !requiredItem || !requiredItem.classList.contains('active')) {
-          tease.textContent = 'Muốn qua bước tiếp theo thì biết phải bấm gì rồi đó 😏💋';
-          nudgeRequired();
-          return;
-        }
-        localStorage.setItem('dessert_choice', choice);
-        location.href = 'lastpage.html';
-      });
-    </script>
-  </body>
+  <div class="climax" id="kissClimax">
+    <div class="climaxCard">
+      <div style="font-size:58px">💋💖✨</div>
+      <div class="climaxTitle">Biết ngay em sẽ chọn cái này 😌</div>
+      <div class="climaxSub">Món ngọt đã chốt: <b>“Vị ngọt trên đôi môi anh”</b><br>Hệ thống xác nhận gu của em rất có tương lai 😭💘</div>
+      <button class="btn btnPrimary glow" id="closeClimax" style="margin-top:24px;background:linear-gradient(135deg,#fff,#ffd7e1);color:#b92e58">Rồi rồi, xem kèo tiếp 😳</button>
+    </div>
+  </div>
+<script>
+  LoveFX.progress(80,'Chọn món ngọt');
+  const cfg=window.VALENTINE_CONFIG||{},grid=document.getElementById('grid'),opts=cfg.dessertOptions||[];
+  grid.innerHTML=opts.map((o,idx)=>`<div class="option ${o.required?'requiredOption':''}" data-index="${idx}" data-value="${o.title} ${o.emoji}" data-required="${o.required?'1':'0'}"><div class="optionTitle">${o.title} ${o.emoji}</div><p class="optionText">${o.subtitle||''}</p></div>`).join('');
+  const items=[...document.querySelectorAll('.option')],required=document.querySelector('.requiredOption'),picked=document.getElementById('picked'),tease=document.getElementById('tease'),next=document.getElementById('next'),climax=document.getElementById('kissClimax');let choice='';
+  function nudge(){if(!required)return;required.classList.remove('nudge');void required.offsetWidth;required.classList.add('nudge')}
+  const wrong=['Sai rồi nha 😌 Đáp án ở dưới kìa 💋','Ủa em tính né câu này hả 😭','Không được chọn đường an toàn đâu 😏','Anh làm web tới đây rồi mà em còn chọn chè hả 😂'];let wrongCount=0;
+  items.forEach(i=>i.onclick=()=>{
+    const ok=i.dataset.required==='1';
+    if(!ok){items.forEach(x=>x.classList.remove('active'));choice='';next.disabled=true;picked.textContent='Chưa được tính đâu nha 😏';tease.textContent=wrong[Math.min(wrongCount++,wrong.length-1)];nudge();LoveFX.selectionFX(i,'Đáp án này bị hệ thống từ chối 😂');if(required)required.scrollIntoView({behavior:'smooth',block:'nearest'});return}
+    items.forEach(x=>x.classList.remove('active'));i.classList.add('active');choice=i.dataset.value;picked.textContent='Đã chọn: '+choice;tease.textContent='Ngoan 😌 Đúng đáp án rồi đó 💖';next.disabled=false;LoveFX.chime('big');LoveFX.burst(46,['💋','💖','✨','🌕']);LoveFX.fireworks(2600);setTimeout(()=>climax.classList.add('show'),280)
+  });
+  document.getElementById('closeClimax').onclick=()=>climax.classList.remove('show');
+  next.onclick=()=>{if(!choice){nudge();return}localStorage.setItem('dessert_choice',choice);LoveFX.chime('big');setTimeout(()=>location.href='lastpage.html',350)};
+</script>
+</body>
 </html>

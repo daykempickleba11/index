@@ -1,113 +1,94 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <title>Đi chơi Trung Thu với mình nha 🏮</title>
-    <link rel="stylesheet" href="css/theme.css" />
-    <script src="config.js"></script>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Đi chơi Trung Thu với anh nha 🏮</title>
+  <link rel="stylesheet" href="css/theme.css" />
+  <script src="config.js"></script>
+  <script src="effects.js"></script>
+</head>
+<body>
+  <div class="revealOverlay" id="intro">
+    <div class="stars" id="stars"></div>
+    <div class="revealInner">
+      <div class="moonBadge"></div>
+      <div class="revealTitle">Có một chuyện anh muốn nói… 🌕</div>
+      <div class="revealText" id="typeText"></div>
+      <button class="btn btnPrimary revealBtn glow" id="openBtn" style="display:none">Mở lời nhắn này 💌</button>
+    </div>
+  </div>
 
-  <body>
-    <main class="wrap">
-      <section class="card" style="padding:18px 16px 22px;">
-        <div class="title">
-          <span class="pink" id="partnerName">Cậu</span>, Trung Thu này đi chơi với mình nha? 🌕🏮
-        </div>
-        <p class="subtitle">Mình có một kế hoạch nhỏ xíu, nhưng sẽ vui hơn nhiều nếu có cậu 🤍</p>
+  <div class="lantern" style="left:7%;animation-delay:-1s">🏮</div>
+  <div class="lantern" style="right:8%;animation-delay:-3s">🏮</div>
 
-        <div class="row">
-          <button class="btn btnPrimary" id="yesBtn" onclick="location.href='thankyou.html'">Đi chứ 💖</button>
-          <button class="btn btnGhost" id="noButton">Hông 🙈</button>
-        </div>
+  <main class="wrap">
+    <section class="card" style="padding:24px 18px 26px;">
+      <div class="moonBadge"></div>
+      <div class="title"><span class="pink" id="partnerName">Cậu</span>, Trung Thu này đi chơi với anh nha? 🌕🏮</div>
+      <p class="subtitle">Anh đã chuẩn bị một cái kèo hơi sến một chút… nhưng thiếu em là mất vui luôn đó 🤍</p>
 
-        <img src="cat.gif" alt="mèo dễ thương" class="imgHero" />
-        <div class="tip">Thử bấm “Hông” xem 😆</div>
-      </section>
-    </main>
+      <div class="loveMeter">
+        <div class="loveMeterLabel"><span>Mức độ rung động</span><span id="meterText">50%</span></div>
+        <div class="loveMeterTrack"><div class="loveMeterFill" id="loveMeter"></div></div>
+      </div>
 
-    <script>
-      let lastTouchEnd = 0;
-      document.addEventListener(
-        "touchend",
-        function (event) {
-          const now = Date.now();
-          if (now - lastTouchEnd <= 300) event.preventDefault();
-          lastTouchEnd = now;
-        },
-        { passive: false }
-      );
+      <div class="row">
+        <button class="btn btnPrimary glow" id="yesBtn">Đi chứ 💖</button>
+        <button class="btn btnGhost" id="noButton">Hông 🙈</button>
+      </div>
 
-      const cfg = window.VALENTINE_CONFIG || {};
-      const partner = cfg.partnerName || "Cậu";
-      document.getElementById("partnerName").textContent = partner;
+      <img src="cat.gif" alt="mèo dễ thương" class="imgHero" />
+      <div class="tip" id="tip">P/S: Nút “Hông” hơi khó tính á 😌</div>
+    </section>
+  </main>
 
-      const noButton = document.getElementById("noButton");
-      const yesBtn = document.getElementById("yesBtn");
+  <script>
+    LoveFX.progress(0,'Mở lời rủ rê');
+    const cfg=window.VALENTINE_CONFIG||{};
+    const partner=cfg.partnerName||'Cậu';
+    document.getElementById('partnerName').textContent=partner;
 
-      const noTexts = ["Hông 🙈", "Ê khoan 😳", "Bắt được tui đi 😝", "Hông nhaaa 🏃‍♀️", "Thôi bấm Đi chứ đi 🥹", "Hehe không cho bấm 😆"];
-      let dodgeCount = 0;
+    const lines=[
+      `Anh đã nghĩ khá lâu xem nên rủ ${partner} kiểu gì cho đỡ quê…`,
+      'Xong anh quyết định làm nguyên cái web này luôn 😭',
+      'Nên đã mở tới đây rồi thì… đọc tiếp nha 💖'
+    ];
+    const typeText=document.getElementById('typeText');
+    const openBtn=document.getElementById('openBtn');
+    let li=0,ci=0;
+    function typeLine(){
+      if(li>=lines.length){openBtn.style.display='inline-block';LoveFX.chime();return}
+      if(ci<=lines[li].length){typeText.innerHTML=lines.slice(0,li).map(x=>`<div>${x}</div>`).join('')+`<div>${lines[li].slice(0,ci)}<span style="opacity:.6">|</span></div>`;ci++;setTimeout(typeLine,28)}
+      else{li++;ci=0;setTimeout(typeLine,420)}
+    }
+    setTimeout(typeLine,450);
+    for(let i=0;i<36;i++){const s=document.createElement('i');s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.animationDelay=Math.random()*2+'s';document.getElementById('stars').appendChild(s)}
+    openBtn.addEventListener('click',()=>{LoveFX.chime('big');LoveFX.burst(24);document.getElementById('intro').classList.add('hide');setTimeout(()=>document.getElementById('loveMeter').style.width='50%',250)});
 
-      function burstIcons() {
-        const icons = ["🏮", "🌕", "✨", "💖", "🥮"];
-        for (let i = 0; i < 5; i++) {
-          const h = document.createElement("div");
-          h.className = "floatHeart";
-          h.textContent = icons[Math.floor(Math.random() * icons.length)];
-          h.style.left = Math.random() * 100 + "vw";
-          h.style.fontSize = 14 + Math.random() * 18 + "px";
-          h.style.animationDelay = Math.random() * 0.25 + "s";
-          document.body.appendChild(h);
-          setTimeout(() => h.remove(), 3500);
-        }
-      }
-
-      function moveNoButton() {
-        const rect = noButton.getBoundingClientRect();
-        const pad = 16;
-        const maxX = Math.max(pad, window.innerWidth - rect.width - pad);
-        const maxY = Math.max(pad, window.innerHeight - rect.height - pad);
-
-        let x = pad + Math.random() * Math.max(1, maxX - pad);
-        let y = pad + Math.random() * Math.max(1, maxY - pad);
-
-        // Tránh nhảy đè trực tiếp lên nút Đồng ý
-        const yesRect = yesBtn.getBoundingClientRect();
-        let tries = 0;
-        while (tries < 12 && x < yesRect.right + 28 && x + rect.width > yesRect.left - 28 && y < yesRect.bottom + 28 && y + rect.height > yesRect.top - 28) {
-          x = pad + Math.random() * Math.max(1, maxX - pad);
-          y = pad + Math.random() * Math.max(1, maxY - pad);
-          tries++;
-        }
-
-        noButton.classList.add("runaway");
-        noButton.style.left = x + "px";
-        noButton.style.top = y + "px";
-        noButton.textContent = noTexts[Math.min(++dodgeCount, noTexts.length - 1)];
-
-        if (dodgeCount % 2 === 0) burstIcons();
-      }
-
-      // Máy tính: vừa dí chuột tới là chạy
-      noButton.addEventListener("pointerenter", moveNoButton);
-      noButton.addEventListener("mouseenter", moveNoButton);
-
-      // Điện thoại: vừa chạm là chạy, không kịp bấm
-      noButton.addEventListener("touchstart", (e) => {
-        e.preventDefault();
-        moveNoButton();
-      }, { passive: false });
-
-      // Nếu click lọt được thì vẫn né tiếp
-      noButton.addEventListener("click", (e) => {
-        e.preventDefault();
-        moveNoButton();
-      });
-
-      // Khi resize/xoay màn hình, đưa nút về vùng nhìn thấy
-      window.addEventListener("resize", () => {
-        if (noButton.classList.contains("runaway")) moveNoButton();
-      });
-    </script>
-  </body>
+    const noButton=document.getElementById('noButton');
+    const yesBtn=document.getElementById('yesBtn');
+    const tip=document.getElementById('tip');
+    const meter=document.getElementById('loveMeter');
+    const meterText=document.getElementById('meterText');
+    const noTexts=['Hông 🙈','Ê khoan 😳','Bắt được anh đi 😝','Ủa thật hả 🏃','Nghĩ lại đi mà 🥹','Không cho bấm đâu 😌','Thôi bấm Đi chứ đi 💖'];
+    const tips=['Ủa định từ chối thiệt hả 😳','Anh thấy hết nha 👀','Chạy nữa nè 😝','Còn cố nữa hả trời 😂','Thôi mà, đi với anh đi 🥹','Nút này phản chủ rồi 😌'];
+    let dodgeCount=0;
+    function moveNoButton(){
+      const rect=noButton.getBoundingClientRect(),pad=16,maxX=Math.max(pad,innerWidth-rect.width-pad),maxY=Math.max(72,innerHeight-rect.height-pad);
+      let x=pad+Math.random()*Math.max(1,maxX-pad),y=72+Math.random()*Math.max(1,maxY-72);
+      const yesRect=yesBtn.getBoundingClientRect();let tries=0;
+      while(tries<14&&x<yesRect.right+36&&x+rect.width>yesRect.left-36&&y<yesRect.bottom+36&&y+rect.height>yesRect.top-36){x=pad+Math.random()*Math.max(1,maxX-pad);y=72+Math.random()*Math.max(1,maxY-72);tries++}
+      noButton.classList.add('runaway');noButton.style.left=x+'px';noButton.style.top=y+'px';
+      dodgeCount++;noButton.textContent=noTexts[Math.min(dodgeCount,noTexts.length-1)];tip.textContent=tips[Math.min(dodgeCount-1,tips.length-1)];
+      const pct=Math.min(95,50+dodgeCount*7);meter.style.width=pct+'%';meterText.textContent=pct+'%';
+      LoveFX.sparkAt(x+rect.width/2,y+rect.height/2,7);if(dodgeCount%2===0)LoveFX.burst(8,['😝','💖','🏮','✨']);
+    }
+    noButton.addEventListener('pointerenter',moveNoButton);noButton.addEventListener('mouseenter',moveNoButton);
+    noButton.addEventListener('touchstart',e=>{e.preventDefault();moveNoButton()},{passive:false});
+    noButton.addEventListener('click',e=>{e.preventDefault();moveNoButton()});
+    yesBtn.addEventListener('click',()=>{meter.style.width='100%';meterText.textContent='100% 💖';LoveFX.chime('big');LoveFX.burst(38);setTimeout(()=>location.href='thankyou.html',650)});
+    addEventListener('resize',()=>{if(noButton.classList.contains('runaway'))moveNoButton()});
+  </script>
+</body>
 </html>

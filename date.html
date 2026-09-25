@@ -1,83 +1,37 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chọn kèo Trung Thu 🏮</title>
-    <link rel="stylesheet" href="css/theme.css" />
-    <script src="config.js"></script>
-  </head>
-
-  <body>
-    <main class="wrap">
-      <section class="card" style="padding:18px 16px 18px;">
-        <div class="title">Oke <span class="pink" id="nick">Cậu</span>… chọn kèo Trung Thu nha 🏮</div>
-        <p class="subtitle">Chọn một kiểu đi chơi cậu thích nhất, rồi chọn ngày nếu muốn.</p>
-
-        <div class="grid" id="choices"></div>
-
-        <div style="margin-top:14px;">
-          <span class="pill" id="pickedPill" style="font-size:15px;">Đã chọn: chạm một lựa chọn ✨</span>
-        </div>
-
-        <div style="margin-top:14px; text-align:left;">
-          <div style="font-size:12px; color:rgba(47,34,34,.62); margin:0 0 6px 6px;">Ngày đi chơi (không bắt buộc)</div>
-          <input id="day" type="date" style="width:100%; padding:14px 12px; border-radius:18px; border:1px solid rgba(231,111,81,.22); background:rgba(255,255,255,.78); font-size:16px;" />
-        </div>
-
-        <div style="margin-top:14px;">
-          <button class="btn btnPrimary btnFull" id="continueBtn" disabled>Chọn món ăn tiếp 🍜</button>
-          <div class="tip" style="margin-top:10px;">Chưa chọn ngày cũng được, mình chốt sau nha 😄</div>
-        </div>
-      </section>
-    </main>
-
-    <script>
-      const cfg = window.VALENTINE_CONFIG || {};
-      document.getElementById('nick').textContent = cfg.nickname || 'Cậu';
-
-      const cardsWrap = document.getElementById('choices');
-      const options = Array.isArray(cfg.dateOptions) && cfg.dateOptions.length ? cfg.dateOptions : [];
-
-      cardsWrap.innerHTML = options.map((o, idx) => `
-        <div class="option" data-choice="${o.title} ${o.emoji}" data-note="${(o.note||'').replace(/"/g,'&quot;')}">
-          <div class="optionTitle">${o.title} ${o.emoji}</div>
-          <p class="optionText">${o.subtitle || ''}</p>
-        </div>
-      `).join('');
-
-      const cards = document.querySelectorAll('.option');
-      const pickedPill = document.getElementById('pickedPill');
-      const continueBtn = document.getElementById('continueBtn');
-      const day = document.getElementById('day');
-
-      let choice = '';
-      let note = '';
-
-      const t = new Date();
-      const yyyy = t.getFullYear();
-      const mm = String(t.getMonth()+1).padStart(2,'0');
-      const dd = String(t.getDate()).padStart(2,'0');
-      day.min = `${yyyy}-${mm}-${dd}`;
-
-      cards.forEach(c => {
-        c.addEventListener('click', () => {
-          cards.forEach(x => x.classList.remove('active'));
-          c.classList.add('active');
-          choice = c.dataset.choice;
-          note = c.dataset.note || '';
-          pickedPill.textContent = 'Đã chọn: ' + choice;
-          continueBtn.disabled = false;
-        });
-      });
-
-      continueBtn.addEventListener('click', () => {
-        const whenDay = day.value ? day.value : 'Ngày nào cậu rảnh';
-        localStorage.setItem('online_choice', choice);
-        localStorage.setItem('online_note', note);
-        localStorage.setItem('online_when', whenDay);
-        location.href = 'food.html';
-      });
-    </script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chọn kèo Trung Thu 🏮</title>
+  <link rel="stylesheet" href="css/theme.css" />
+  <script src="config.js"></script>
+  <script src="effects.js"></script>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card" style="padding:22px 18px;">
+      <div class="title">Oke <span class="pink" id="nick">Cậu</span>… mình đi đâu đây? 🏮</div>
+      <p class="subtitle">Em chọn chỗ, anh lo phần còn lại. Công bằng ghê chưa 😌</p>
+      <div class="grid" id="choices"></div>
+      <div style="margin-top:14px"><span class="pill" id="pickedPill">Đã chọn: chạm một lựa chọn ✨</span></div>
+      <div style="margin-top:14px;text-align:left">
+        <div style="font-size:12px;color:rgba(47,34,34,.62);margin:0 0 6px 6px">Ngày đi chơi (không bắt buộc)</div>
+        <input id="day" type="date" style="width:100%;padding:14px 12px;border-radius:18px;border:1px solid rgba(231,111,81,.22);background:rgba(255,255,255,.82);font-size:16px" />
+      </div>
+      <button class="btn btnPrimary btnFull" id="continueBtn" disabled style="margin-top:16px">Chọn món ăn tiếp 🍜</button>
+      <div class="tip">Chọn ngày sau cũng được, miễn là có đi 😌</div>
+    </section>
+  </main>
+<script>
+  LoveFX.progress(40,'Chọn địa điểm');
+  const cfg=window.VALENTINE_CONFIG||{};document.getElementById('nick').textContent=cfg.nickname||'Cậu';
+  const wrap=document.getElementById('choices'),opts=cfg.dateOptions||[];
+  wrap.innerHTML=opts.map(o=>`<div class="option" data-choice="${o.title} ${o.emoji}" data-note="${(o.note||'').replace(/"/g,'&quot;')}"><div class="optionTitle">${o.title} ${o.emoji}</div><p class="optionText">${o.subtitle||''}</p></div>`).join('');
+  const cards=[...document.querySelectorAll('.option')],pill=document.getElementById('pickedPill'),btn=document.getElementById('continueBtn'),day=document.getElementById('day');let choice='',note='';
+  const t=new Date();day.min=`${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
+  cards.forEach(c=>c.onclick=()=>{cards.forEach(x=>x.classList.remove('active'));c.classList.add('active');choice=c.dataset.choice;note=c.dataset.note||'';pill.textContent='Đã chọn: '+choice;btn.disabled=false;LoveFX.selectionFX(c,'Anh ghi nhận rồi nha 😌')});
+  btn.onclick=()=>{localStorage.setItem('online_choice',choice);localStorage.setItem('online_note',note);localStorage.setItem('online_when',day.value||'Ngày nào em rảnh');LoveFX.chime();setTimeout(()=>location.href='food.html',250)};
+</script>
+</body>
 </html>

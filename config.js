@@ -77,8 +77,8 @@ window.VALENTINE_CONFIG = {
       "required": true
     }
   ],
-  "finalButtonText": "Hẹn cậu Trung Thu nha 🌕🏮",
+  "finalButtonText": "Bùng nổ lần cuối 🎆",
   "shareButtonText": "Sao chép kèo của tụi mình 💌",
   "shareCopiedText": "Đã sao chép ✅ Gửi lại cho mình nha 💌",
-  "shareMessageFooter": "Chốt kèo rồi đó nha, không được bùng 😌"
+  "shareMessageFooter": "Ký tên đóng dấu rồi nha 😌 Trung Thu này không được bùng kèo đâu 💖"
 };
