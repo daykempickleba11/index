@@ -1,25 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Yayyy 💖</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Em giữ lời đó nha 💖</title>
   <link rel="stylesheet" href="css/theme.css" />
-  <script src="config.js"></script>
-  <script src="effects.js"></script>
+  <script src="config.js"></script><script src="effects.js"></script>
 </head>
 <body>
-  <main class="wrap">
-    <section class="card" style="padding:24px 18px 26px;">
-      <div style="font-size:36px">🏮✨🌕✨🏮</div>
-      <div class="title" style="font-size:clamp(34px,6vw,50px)">Yayyy, chốt kèo rồi nha 💖</div>
-      <p class="subtitle">Anh biết mà… em đâu nỡ từ chối anh 😌</p>
-      <div class="secretNote"><b>Thông báo:</b> Hệ thống vừa ghi nhận một người cực kỳ dễ thương đã đồng ý đi Trung Thu với anh. Không hỗ trợ hoàn tác 😭💘</div>
-      <button class="btn btnPrimary btnFull glow" style="margin-top:18px" onclick="location.href='date.html'">Lên kèo Trung Thu thôi 💌</button>
-      <img src="hug.gif" onerror="this.style.display='none'" alt="hai bé ôm nhau" class="imgHero" />
-      <div class="tip">Còn vài bước nữa thôi, sến chưa hết đâu 🥹</div>
-    </section>
-  </main>
-  <script>LoveFX.progress(20,'Đồng ý rồi');LoveFX.burst(44);LoveFX.chime('big');setTimeout(()=>LoveFX.burst(20,['💖','✨','🌕']),900)</script>
+<div class="lantern left">🏮</div><div class="lantern right">🏮</div>
+<main class="wrap">
+  <section class="card">
+    <div class="heartSeal">♥</div>
+    <div class="eyebrow">đã ghi nhận câu trả lời</div>
+    <h1 class="title">Vậy là <span class="hot">anh đồng ý</span> rồi nha 💖</h1>
+    <p class="subtitle">Em sẽ giả vờ bình tĩnh, mặc dù trong đầu đang bắn pháo hoa hơi nhiều.</p>
+    <div class="fullLetter">
+      Em không cần một buổi tối thật sang. Em chỉ muốn có một buổi tối mà <strong>anh không vội, em không bận</strong>, rồi hai đứa cứ đi đâu đó, ăn gì đó, nói chuyện thật lâu.
+    </div>
+    <button class="btn btnPrimary btnFull btnGlow" id="next" style="margin-top:18px">Anh chọn kèo với em nha 🏮</button>
+  </section>
+</main>
+<script>
+LoveFX.progress(20,'Anh đã đồng ý');
+LoveFX.chime('big'); LoveFX.burst(34,['💖','✨','🌕']);
+document.getElementById('next').onclick=()=>LoveFX.go('date.html');
+</script>
 </body>
 </html>

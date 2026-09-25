@@ -1,84 +1,22 @@
-window.VALENTINE_CONFIG = {
-  "partnerName": "Cậu",
-  "nickname": "Cậu",
-  "dateOptions": [
-    {
-      "title": "Dạo phố đèn lồng",
-      "emoji": "🏮",
-      "subtitle": "Đi dạo • ngắm đèn • chụp ảnh",
-      "note": "Đi chậm chậm, nói chuyện nhiều nhiều"
-    },
-    {
-      "title": "Cà phê ngắm trăng",
-      "emoji": "🌕",
-      "subtitle": "Tìm quán xinh rồi ngồi chill",
-      "note": "Một góc yên yên, có cậu là được"
-    },
-    {
-      "title": "Đi ăn rồi dạo phố",
-      "emoji": "🍜",
-      "subtitle": "Ăn món ngon rồi cùng đi bộ",
-      "note": "No bụng rồi mình đi dạo"
-    },
-    {
-      "title": "Chụp hình Trung Thu",
-      "emoji": "📸",
-      "subtitle": "Lồng đèn • phố xá • vài tấm kỷ niệm",
-      "note": "Mình chụp cho cậu thiệt đẹp"
-    }
+window.MID_AUTUMN_CONFIG = {
+  recipient: "Anh",
+  dateOptions: [
+    { title: "Dạo phố đèn lồng", emoji: "🏮", subtitle: "Đi chậm thôi, để em có cớ đi cạnh anh lâu hơn." },
+    { title: "Cà phê ngắm trăng", emoji: "🌕", subtitle: "Một góc yên yên, có anh ngồi đối diện là đủ." },
+    { title: "Ăn tối rồi đi bộ", emoji: "🍜", subtitle: "Ăn món ngon, kể chuyện linh tinh, rồi dạo thêm một vòng." },
+    { title: "Chụp một bộ ảnh Trung Thu", emoji: "📸", subtitle: "Em chụp anh đẹp. Còn ảnh đôi thì... mình tính sau 😌" }
   ],
-  "foodOptions": [
-    {
-      "title": "Lẩu",
-      "emoji": "🍲",
-      "subtitle": "Ấm áp, dễ ngồi nói chuyện"
-    },
-    {
-      "title": "Đồ nướng",
-      "emoji": "🥩",
-      "subtitle": "Ăn vui, ngồi lâu được"
-    },
-    {
-      "title": "Đồ ăn vặt",
-      "emoji": "🍢",
-      "subtitle": "Đi đâu ăn đó"
-    },
-    {
-      "title": "Món cậu thích",
-      "emoji": "💗",
-      "subtitle": "Cậu chọn, mình theo"
-    }
+  foodOptions: [
+    { title: "Lẩu", emoji: "🍲", subtitle: "Ấm áp, ngồi lâu, nói chuyện nhiều." },
+    { title: "Đồ nướng", emoji: "🥩", subtitle: "Vừa ăn vừa giành đồ ngon với nhau." },
+    { title: "Ăn vặt cả tối", emoji: "🍢", subtitle: "Đi đâu ăn đó, vui là chính." },
+    { title: "Món anh thích", emoji: "💗", subtitle: "Anh chọn món. Em chọn đi cùng anh." }
   ],
-  "dessertOptions": [
-    {
-      "title": "Bánh Trung Thu",
-      "emoji": "🥮",
-      "subtitle": "Đúng vibe Trung Thu"
-    },
-    {
-      "title": "Trà sữa",
-      "emoji": "🧋",
-      "subtitle": "Đi chơi phải có"
-    },
-    {
-      "title": "Kem",
-      "emoji": "🍦",
-      "subtitle": "Ngọt ngọt một chút"
-    },
-    {
-      "title": "Chè",
-      "emoji": "🍧",
-      "subtitle": "Mát mát rồi đi dạo"
-    },
-    {
-      "title": "Vị ngọt trên đôi môi anh",
-      "emoji": "💋",
-      "subtitle": "Option này mới được đi tiếp nha 😏",
-      "required": true
-    }
-  ],
-  "finalButtonText": "Bùng nổ lần cuối 🎆",
-  "shareButtonText": "Sao chép kèo của tụi mình 💌",
-  "shareCopiedText": "Đã sao chép ✅ Gửi lại cho mình nha 💌",
-  "shareMessageFooter": "Ký tên đóng dấu rồi nha 😌 Trung Thu này không được bùng kèo đâu 💖"
+  dessertOptions: [
+    { title: "Bánh Trung Thu", emoji: "🥮", subtitle: "Đúng chủ đề, nhưng chưa đúng đáp án." },
+    { title: "Trà sữa", emoji: "🧋", subtitle: "Ngọt đó, nhưng vẫn thiếu một chút." },
+    { title: "Kem", emoji: "🍦", subtitle: "Mát đó, nhưng chưa đủ làm em rung động." },
+    { title: "Chè", emoji: "🍧", subtitle: "An toàn quá. Em không cho anh né đâu 😌" },
+    { title: "Vị ngọt trên đôi môi em", emoji: "💋", subtitle: "Đúng. Câu này chỉ có một đáp án thôi.", required: true }
+  ]
 };

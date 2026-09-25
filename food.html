@@ -1,31 +1,31 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ăn gì nè? 🍽️</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Anh chọn món nha 🍽️</title>
   <link rel="stylesheet" href="css/theme.css" />
-  <script src="config.js"></script>
-  <script src="effects.js"></script>
+  <script src="config.js"></script><script src="effects.js"></script>
 </head>
 <body>
-  <main class="wrap">
-    <section class="card" style="padding:22px 18px;">
-      <div class="title">Tối đó mình ăn gì nè? 🍽️</div>
-      <p class="subtitle">Em chọn món em thích, anh chọn ngồi đối diện em 😌</p>
-      <div class="grid" id="grid"></div>
-      <div style="margin-top:14px"><span class="pill" id="picked">Đã chọn: chạm một lựa chọn ✨</span></div>
-      <button class="btn btnPrimary btnFull" id="next" disabled style="margin-top:16px">Chọn món ngọt tiếp 🍰</button>
-      <div class="secretNote">Món chính chỉ là phụ thôi. Nhân vật chính đang đọc dòng này đó 😌</div>
-    </section>
-  </main>
+<main class="wrap">
+  <section class="card">
+    <div class="eyebrow">chương 2 • ăn gì đó ngon ngon</div>
+    <h1 class="title">Anh chọn món. <span class="hot">Em chọn ngồi cạnh anh.</span></h1>
+    <p class="subtitle">Đừng lo chọn sai. Món nào cũng được, miễn là tối đó mình có chuyện để kể nhau nghe.</p>
+    <div class="grid" id="grid"></div>
+    <span class="pill" id="picked">Anh chưa chọn món ✨</span>
+    <button class="btn btnPrimary btnFull" id="next" disabled style="margin-top:16px">Tới món ngọt quan trọng nhất 🍰</button>
+    <div class="secretNote">Spoiler nhẹ: món ngọt phía sau có một đáp án hơi thiên vị em 😌</div>
+  </section>
+</main>
 <script>
-  LoveFX.progress(60,'Chọn món ăn');
-  const cfg=window.VALENTINE_CONFIG||{},grid=document.getElementById('grid'),opts=cfg.foodOptions||[];
-  grid.innerHTML=opts.map(o=>`<div class="option" data-value="${o.title} ${o.emoji}"><div class="optionTitle">${o.title} ${o.emoji}</div><p class="optionText">${o.subtitle||''}</p></div>`).join('');
-  const items=[...document.querySelectorAll('.option')],picked=document.getElementById('picked'),next=document.getElementById('next');let choice='';
-  items.forEach(i=>i.onclick=()=>{items.forEach(x=>x.classList.remove('active'));i.classList.add('active');choice=i.dataset.value;picked.textContent='Đã chọn: '+choice;next.disabled=false;LoveFX.selectionFX(i,'Món này được đó 😋')});
-  next.onclick=()=>{localStorage.setItem('food_choice',choice);LoveFX.chime();setTimeout(()=>location.href='dessert.html',250)};
+LoveFX.progress(60,'Chọn món chính');
+const cfg=window.MID_AUTUMN_CONFIG, grid=document.getElementById('grid');
+grid.innerHTML=cfg.foodOptions.map(o=>`<div class="option" data-v="${o.title} ${o.emoji}"><div class="optionTitle">${o.title} ${o.emoji}</div><p class="optionText">${o.subtitle}</p></div>`).join('');
+const items=[...document.querySelectorAll('.option')],picked=document.getElementById('picked'),next=document.getElementById('next');let choice='';
+items.forEach(i=>i.onclick=()=>{items.forEach(x=>x.classList.remove('active'));i.classList.add('active');choice=i.dataset.v;picked.textContent='Anh chọn: '+choice;next.disabled=false;LoveFX.selectionFX(i,'Gu này em duyệt 😌')});
+next.onclick=()=>{localStorage.setItem('food_choice',choice);LoveFX.go('dessert.html')};
 </script>
 </body>
 </html>

@@ -1,54 +1,50 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Món ngọt 🍰</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Món ngọt quan trọng nhất 💋</title>
   <link rel="stylesheet" href="css/theme.css" />
-  <script src="config.js"></script>
-  <script src="effects.js"></script>
+  <script src="config.js"></script><script src="effects.js"></script>
   <style>
-    .requiredOption{grid-column:1/-1;position:relative;overflow:hidden;border-color:rgba(255,79,123,.48);background:linear-gradient(135deg,#fff,#fff0f5);animation:softPulse 1.8s ease-in-out infinite}
-    .requiredOption::after{content:"OPTION ĐÚNG 💋";position:absolute;top:9px;right:11px;font-size:10px;font-weight:1000;letter-spacing:.5px;color:#ff4f7b;background:rgba(255,255,255,.9);border:1px solid rgba(255,79,123,.24);border-radius:999px;padding:5px 8px}
-    @keyframes softPulse{50%{box-shadow:0 0 0 8px rgba(255,79,123,.06),0 18px 34px rgba(255,79,123,.12)}}
-    .tease{min-height:24px;margin-top:10px;font-size:13px;font-weight:900;color:#d85f62;text-align:center}
-    .nudge{animation:nudge .38s ease-in-out!important}@keyframes nudge{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-4px)}}
+    .requiredOption{grid-column:1/-1;border-color:rgba(255,95,135,.55);background:linear-gradient(135deg,#fff,#fff2f5);overflow:hidden}
+    .requiredOption::after{content:"đáp án em thích 💋";position:absolute;right:12px;top:11px;font-size:10px;font-weight:950;color:#b82f5c;background:#fff;border:1px solid rgba(255,95,135,.20);border-radius:999px;padding:5px 8px}
+    .shake{animation:shake .28s ease}@keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}
   </style>
 </head>
 <body>
-  <main class="wrap">
-    <section class="card" style="padding:22px 18px;">
-      <div class="title">Rồi tới phần quan trọng nhất… món ngọt 🍰</div>
-      <p class="subtitle">Câu này có đáp án đúng nha. Chọn cẩn thận 😌</p>
-      <div class="grid" id="grid"></div>
-      <div class="tease" id="tease"></div>
-      <div style="margin-top:8px"><span class="pill" id="picked">Đã chọn: chạm một lựa chọn ✨</span></div>
-      <button class="btn btnPrimary btnFull" id="next" disabled style="margin-top:16px">Xem kèo của tụi mình 💖</button>
-    </section>
-  </main>
-
-  <div class="climax" id="kissClimax">
-    <div class="climaxCard">
-      <div style="font-size:58px">💋💖✨</div>
-      <div class="climaxTitle">Biết ngay em sẽ chọn cái này 😌</div>
-      <div class="climaxSub">Món ngọt đã chốt: <b>“Vị ngọt trên đôi môi anh”</b><br>Hệ thống xác nhận gu của em rất có tương lai 😭💘</div>
-      <button class="btn btnPrimary glow" id="closeClimax" style="margin-top:24px;background:linear-gradient(135deg,#fff,#ffd7e1);color:#b92e58">Rồi rồi, xem kèo tiếp 😳</button>
-    </div>
+<main class="wrap">
+  <section class="card">
+    <div class="eyebrow">chương 3 • câu hỏi có đáp án</div>
+    <h1 class="title">Rồi… <span class="hot">món ngọt</span> anh chọn gì? 🍰</h1>
+    <p class="subtitle">Lần này em nói trước: bốn lựa chọn đầu chỉ để trang trí thôi.</p>
+    <div class="grid" id="grid"></div>
+    <span class="pill" id="picked">Anh cứ thử chọn xem 😌</span>
+    <div class="tip" id="tease">Em đang chờ đúng một đáp án.</div>
+    <button class="btn btnPrimary btnFull" id="next" disabled style="margin-top:16px">Mở lời cuối của em 💖</button>
+  </section>
+</main>
+<div class="climax" id="kiss">
+  <div class="climaxCard">
+    <div class="climaxIcon">💋✨💖</div>
+    <div class="climaxTitle">Đúng rồi đó, anh.</div>
+    <div class="climaxSub">Nếu Trung Thu cần một chút ngọt ngào… thì em xin phép tự ứng cử.<br><br><b>“Vị ngọt trên đôi môi em”</b> đã được chốt 😌</div>
+    <button class="btn btnPrimary btnGlow" id="close" style="margin-top:24px">Em biết rồi, cho anh xem tiếp 😳</button>
   </div>
+</div>
 <script>
-  LoveFX.progress(80,'Chọn món ngọt');
-  const cfg=window.VALENTINE_CONFIG||{},grid=document.getElementById('grid'),opts=cfg.dessertOptions||[];
-  grid.innerHTML=opts.map((o,idx)=>`<div class="option ${o.required?'requiredOption':''}" data-index="${idx}" data-value="${o.title} ${o.emoji}" data-required="${o.required?'1':'0'}"><div class="optionTitle">${o.title} ${o.emoji}</div><p class="optionText">${o.subtitle||''}</p></div>`).join('');
-  const items=[...document.querySelectorAll('.option')],required=document.querySelector('.requiredOption'),picked=document.getElementById('picked'),tease=document.getElementById('tease'),next=document.getElementById('next'),climax=document.getElementById('kissClimax');let choice='';
-  function nudge(){if(!required)return;required.classList.remove('nudge');void required.offsetWidth;required.classList.add('nudge')}
-  const wrong=['Sai rồi nha 😌 Đáp án ở dưới kìa 💋','Ủa em tính né câu này hả 😭','Không được chọn đường an toàn đâu 😏','Anh làm web tới đây rồi mà em còn chọn chè hả 😂'];let wrongCount=0;
-  items.forEach(i=>i.onclick=()=>{
-    const ok=i.dataset.required==='1';
-    if(!ok){items.forEach(x=>x.classList.remove('active'));choice='';next.disabled=true;picked.textContent='Chưa được tính đâu nha 😏';tease.textContent=wrong[Math.min(wrongCount++,wrong.length-1)];nudge();LoveFX.selectionFX(i,'Đáp án này bị hệ thống từ chối 😂');if(required)required.scrollIntoView({behavior:'smooth',block:'nearest'});return}
-    items.forEach(x=>x.classList.remove('active'));i.classList.add('active');choice=i.dataset.value;picked.textContent='Đã chọn: '+choice;tease.textContent='Ngoan 😌 Đúng đáp án rồi đó 💖';next.disabled=false;LoveFX.chime('big');LoveFX.burst(46,['💋','💖','✨','🌕']);LoveFX.fireworks(2600);setTimeout(()=>climax.classList.add('show'),280)
-  });
-  document.getElementById('closeClimax').onclick=()=>climax.classList.remove('show');
-  next.onclick=()=>{if(!choice){nudge();return}localStorage.setItem('dessert_choice',choice);LoveFX.chime('big');setTimeout(()=>location.href='lastpage.html',350)};
+LoveFX.progress(80,'Câu hỏi thiên vị');
+const cfg=window.MID_AUTUMN_CONFIG, grid=document.getElementById('grid');
+grid.innerHTML=cfg.dessertOptions.map((o,i)=>`<div class="option ${o.required?'requiredOption':''}" data-v="${o.title} ${o.emoji}" data-ok="${o.required?'1':'0'}"><div class="optionTitle">${o.title} ${o.emoji}</div><p class="optionText">${o.subtitle}</p></div>`).join('');
+const items=[...document.querySelectorAll('.option')], required=document.querySelector('.requiredOption'), picked=document.getElementById('picked'), tease=document.getElementById('tease'), next=document.getElementById('next'), kiss=document.getElementById('kiss');
+const wrong=['Không phải 😌 Anh nhìn xuống dưới đi.','Anh đang cố né đáp án của em đúng không? 😭','Em làm tới đây rồi mà anh còn chọn trà sữa hả 😂','Không cho chọn đường an toàn đâu nha 😏'];let wc=0,choice='';
+function nudge(){required.classList.remove('shake');void required.offsetWidth;required.classList.add('shake')}
+items.forEach(i=>i.onclick=()=>{
+  if(i.dataset.ok!=='1'){picked.textContent='Đáp án này không được tính 😌';tease.textContent=wrong[Math.min(wc++,wrong.length-1)];next.disabled=true;choice='';nudge();LoveFX.selectionFX(i,'Hệ thống thiên vị em nên từ chối đáp án này 😂');return}
+  items.forEach(x=>x.classList.remove('active'));i.classList.add('active');choice=i.dataset.v;picked.textContent='Anh chọn: '+choice;tease.textContent='Ngoan. Đúng ý em rồi đó 💖';next.disabled=false;LoveFX.chime('big');LoveFX.fireworks(2100);LoveFX.burst(48,['💋','💖','✨']);setTimeout(()=>kiss.classList.add('show'),260)
+});
+document.getElementById('close').onclick=()=>kiss.classList.remove('show');
+next.onclick=()=>{localStorage.setItem('dessert_choice',choice);LoveFX.go('lastpage.html')};
 </script>
 </body>
 </html>

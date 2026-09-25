@@ -1,94 +1,92 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <title>Đi chơi Trung Thu với anh nha 🏮</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+  <meta name="theme-color" content="#211326" />
+  <title>Anh ơi, Trung Thu này đi với em nha 🏮</title>
   <link rel="stylesheet" href="css/theme.css" />
   <script src="config.js"></script>
   <script src="effects.js"></script>
 </head>
 <body>
   <div class="revealOverlay" id="intro">
-    <div class="stars" id="stars"></div>
     <div class="revealInner">
-      <div class="moonBadge"></div>
-      <div class="revealTitle">Có một chuyện anh muốn nói… 🌕</div>
-      <div class="revealText" id="typeText"></div>
-      <button class="btn btnPrimary revealBtn glow" id="openBtn" style="display:none">Mở lời nhắn này 💌</button>
+      <div class="revealTag">một lời mời dành riêng cho anh</div>
+      <div class="revealTitle">Anh ơi… 🌕</div>
+      <div class="revealText" id="introText"></div>
+      <button class="btn btnPrimary btnGlow revealBtn" id="openBtn" hidden>Mở lời mời của em 💌</button>
     </div>
   </div>
 
-  <div class="lantern" style="left:7%;animation-delay:-1s">🏮</div>
-  <div class="lantern" style="right:8%;animation-delay:-3s">🏮</div>
-
+  <div class="lantern left">🏮</div><div class="lantern right">🏮</div>
   <main class="wrap">
-    <section class="card" style="padding:24px 18px 26px;">
-      <div class="moonBadge"></div>
-      <div class="title"><span class="pink" id="partnerName">Cậu</span>, Trung Thu này đi chơi với anh nha? 🌕🏮</div>
-      <p class="subtitle">Anh đã chuẩn bị một cái kèo hơi sến một chút… nhưng thiếu em là mất vui luôn đó 🤍</p>
-
-      <div class="loveMeter">
-        <div class="loveMeterLabel"><span>Mức độ rung động</span><span id="meterText">50%</span></div>
-        <div class="loveMeterTrack"><div class="loveMeterFill" id="loveMeter"></div></div>
-      </div>
-
+    <section class="card">
+      <div class="moonHero"></div>
+      <div class="eyebrow">Trung Thu năm nay</div>
+      <h1 class="title"><span class="hot">Anh</span> cho em mượn một buổi tối nha?</h1>
+      <p class="subtitle">Em không hứa tối đó hoàn hảo. Em chỉ hứa là sẽ có đèn lồng, có trăng, có đồ ăn ngon… và có em đi cạnh anh.</p>
+      <div class="bigQuote">“Trăng thì năm nào cũng có. Nhưng em muốn Trung Thu năm nay có thêm anh.”</div>
       <div class="row">
-        <button class="btn btnPrimary glow" id="yesBtn">Đi chứ 💖</button>
-        <button class="btn btnGhost" id="noButton">Hông 🙈</button>
+        <button class="btn btnPrimary btnGlow" id="yesBtn">Anh đồng ý 💖</button>
+        <button class="btn btnGhost" id="noButton">Để anh suy nghĩ 🙈</button>
       </div>
-
-      <img src="cat.gif" alt="mèo dễ thương" class="imgHero" />
-      <div class="tip" id="tip">P/S: Nút “Hông” hơi khó tính á 😌</div>
+      <div class="tip" id="tip">Nút bên phải hơi nhát. Anh thử lại gần xem 😌</div>
     </section>
   </main>
 
-  <script>
-    LoveFX.progress(0,'Mở lời rủ rê');
-    const cfg=window.VALENTINE_CONFIG||{};
-    const partner=cfg.partnerName||'Cậu';
-    document.getElementById('partnerName').textContent=partner;
+<script>
+LoveFX.progress(0,'Lời mời bắt đầu');
+const introText = document.getElementById('introText');
+const openBtn = document.getElementById('openBtn');
+const lines = [
+  'Em đã định nhắn một câu bình thường thôi…',
+  'Nhưng rồi em nghĩ: rủ anh đi chơi mà bình thường quá thì không được.',
+  'Nên em làm nguyên cái web này. Chỉ để hỏi anh một câu thôi.'
+];
+let line = 0;
+function showLine(){
+  if(line >= lines.length){ openBtn.hidden = false; LoveFX.chime(); return; }
+  const span = document.createElement('span'); span.className='line'; span.textContent = lines[line++];
+  introText.appendChild(span);
+  setTimeout(showLine, 720);
+}
+setTimeout(showLine, 480);
+openBtn.onclick = () => {
+  LoveFX.chime('big'); LoveFX.burst(34,['💖','✨','🏮']);
+  document.getElementById('intro').classList.add('hide');
+};
 
-    const lines=[
-      `Anh đã nghĩ khá lâu xem nên rủ ${partner} kiểu gì cho đỡ quê…`,
-      'Xong anh quyết định làm nguyên cái web này luôn 😭',
-      'Nên đã mở tới đây rồi thì… đọc tiếp nha 💖'
-    ];
-    const typeText=document.getElementById('typeText');
-    const openBtn=document.getElementById('openBtn');
-    let li=0,ci=0;
-    function typeLine(){
-      if(li>=lines.length){openBtn.style.display='inline-block';LoveFX.chime();return}
-      if(ci<=lines[li].length){typeText.innerHTML=lines.slice(0,li).map(x=>`<div>${x}</div>`).join('')+`<div>${lines[li].slice(0,ci)}<span style="opacity:.6">|</span></div>`;ci++;setTimeout(typeLine,28)}
-      else{li++;ci=0;setTimeout(typeLine,420)}
-    }
-    setTimeout(typeLine,450);
-    for(let i=0;i<36;i++){const s=document.createElement('i');s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.animationDelay=Math.random()*2+'s';document.getElementById('stars').appendChild(s)}
-    openBtn.addEventListener('click',()=>{LoveFX.chime('big');LoveFX.burst(24);document.getElementById('intro').classList.add('hide');setTimeout(()=>document.getElementById('loveMeter').style.width='50%',250)});
-
-    const noButton=document.getElementById('noButton');
-    const yesBtn=document.getElementById('yesBtn');
-    const tip=document.getElementById('tip');
-    const meter=document.getElementById('loveMeter');
-    const meterText=document.getElementById('meterText');
-    const noTexts=['Hông 🙈','Ê khoan 😳','Bắt được anh đi 😝','Ủa thật hả 🏃','Nghĩ lại đi mà 🥹','Không cho bấm đâu 😌','Thôi bấm Đi chứ đi 💖'];
-    const tips=['Ủa định từ chối thiệt hả 😳','Anh thấy hết nha 👀','Chạy nữa nè 😝','Còn cố nữa hả trời 😂','Thôi mà, đi với anh đi 🥹','Nút này phản chủ rồi 😌'];
-    let dodgeCount=0;
-    function moveNoButton(){
-      const rect=noButton.getBoundingClientRect(),pad=16,maxX=Math.max(pad,innerWidth-rect.width-pad),maxY=Math.max(72,innerHeight-rect.height-pad);
-      let x=pad+Math.random()*Math.max(1,maxX-pad),y=72+Math.random()*Math.max(1,maxY-72);
-      const yesRect=yesBtn.getBoundingClientRect();let tries=0;
-      while(tries<14&&x<yesRect.right+36&&x+rect.width>yesRect.left-36&&y<yesRect.bottom+36&&y+rect.height>yesRect.top-36){x=pad+Math.random()*Math.max(1,maxX-pad);y=72+Math.random()*Math.max(1,maxY-72);tries++}
-      noButton.classList.add('runaway');noButton.style.left=x+'px';noButton.style.top=y+'px';
-      dodgeCount++;noButton.textContent=noTexts[Math.min(dodgeCount,noTexts.length-1)];tip.textContent=tips[Math.min(dodgeCount-1,tips.length-1)];
-      const pct=Math.min(95,50+dodgeCount*7);meter.style.width=pct+'%';meterText.textContent=pct+'%';
-      LoveFX.sparkAt(x+rect.width/2,y+rect.height/2,7);if(dodgeCount%2===0)LoveFX.burst(8,['😝','💖','🏮','✨']);
-    }
-    noButton.addEventListener('pointerenter',moveNoButton);noButton.addEventListener('mouseenter',moveNoButton);
-    noButton.addEventListener('touchstart',e=>{e.preventDefault();moveNoButton()},{passive:false});
-    noButton.addEventListener('click',e=>{e.preventDefault();moveNoButton()});
-    yesBtn.addEventListener('click',()=>{meter.style.width='100%';meterText.textContent='100% 💖';LoveFX.chime('big');LoveFX.burst(38);setTimeout(()=>location.href='thankyou.html',650)});
-    addEventListener('resize',()=>{if(noButton.classList.contains('runaway'))moveNoButton()});
-  </script>
+const noButton = document.getElementById('noButton');
+const yesBtn = document.getElementById('yesBtn');
+const tip = document.getElementById('tip');
+const noLabels = ['Để anh suy nghĩ 🙈','Ơ khoan 😳','Em thấy anh rồi nha 👀','Nút này không hợp tác 😭','Đừng né em nữa mà 🥹','Bấm bên kia đi anh 😌','Em chờ đó 💖'];
+const tipLabels = ['Ủa anh định từ chối thiệt hả 😳','Em thấy con trỏ của anh nha 👀','Nó chạy vì nó biết đáp án đúng rồi 😌','Thôi mà, cho em một buổi tối đi 🥹','Anh bấm “Đồng ý” là web ngoan liền 💖'];
+let dodges = 0;
+function dodge(){
+  const r = noButton.getBoundingClientRect();
+  const maxX = Math.max(10, innerWidth - r.width - 10);
+  const maxY = Math.max(80, innerHeight - r.height - 18);
+  let x = 10 + Math.random() * (maxX - 10);
+  let y = 80 + Math.random() * (maxY - 80);
+  const yr = yesBtn.getBoundingClientRect();
+  for(let i=0;i<8 && x < yr.right+35 && x+r.width > yr.left-35 && y < yr.bottom+35 && y+r.height > yr.top-35;i++){
+    x = 10 + Math.random()*(maxX-10); y = 80 + Math.random()*(maxY-80);
+  }
+  noButton.classList.add('runaway');
+  noButton.style.transform = `translate3d(${x}px,${y}px,0)`;
+  dodges++;
+  noButton.textContent = noLabels[Math.min(dodges,noLabels.length-1)];
+  tip.textContent = tipLabels[Math.min(dodges-1,tipLabels.length-1)];
+  LoveFX.sparkAt(x+r.width/2,y+r.height/2,7);
+}
+noButton.addEventListener('pointerenter', dodge);
+noButton.addEventListener('pointerdown', e=>{e.preventDefault();dodge()});
+noButton.addEventListener('click', e=>{e.preventDefault();dodge()});
+yesBtn.onclick = () => {
+  yesBtn.textContent='Chốt nha anh 💖'; LoveFX.chime('big'); LoveFX.fireworks(1900); LoveFX.burst(42,['💖','✨','🏮','🌕']);
+  setTimeout(()=>LoveFX.go('thankyou.html'),700);
+};
+</script>
 </body>
 </html>

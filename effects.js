@@ -1,52 +1,170 @@
-(function(){
-  function burst(count=18, icons=['💖','✨','🏮','🌕','🥮']){
-    for(let i=0;i<count;i++){
-      const el=document.createElement('div');
-      el.className='floatHeart';
-      el.textContent=icons[Math.floor(Math.random()*icons.length)];
-      el.style.left=(Math.random()*100)+'vw';
-      el.style.fontSize=(14+Math.random()*24)+'px';
-      el.style.animationDelay=(Math.random()*.45)+'s';
+(() => {
+  let audioCtx = null;
+  const getAudio = () => {
+    try {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return null;
+      if (!audioCtx || audioCtx.state === 'closed') audioCtx = new Ctx();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      return audioCtx;
+    } catch { return null; }
+  };
+
+  function chime(kind = 'soft') {
+    const ctx = getAudio();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    const notes = kind === 'big' ? [523.25, 659.25, 783.99, 1046.5] : [659.25, 783.99];
+    notes.forEach((f, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = f;
+      gain.gain.setValueAtTime(0.0001, now + i * 0.07);
+      gain.gain.exponentialRampToValueAtTime(kind === 'big' ? 0.07 : 0.035, now + i * 0.07 + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.07 + 0.42);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(now + i * 0.07);
+      osc.stop(now + i * 0.07 + 0.45);
+    });
+  }
+
+  function toast(msg) {
+    let el = document.querySelector('.toast');
+    if (!el) {
+      el = document.createElement('div');
+      el.className = 'toast';
       document.body.appendChild(el);
-      setTimeout(()=>el.remove(),4200);
     }
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toast.t);
+    toast.t = setTimeout(() => el.classList.remove('show'), 1800);
   }
-  function sparkAt(x,y,count=10){
-    const icons=['✨','💖','⭐'];
-    for(let i=0;i<count;i++){
-      const s=document.createElement('div');s.className='sparkle';s.textContent=icons[i%icons.length];
-      s.style.left=(x+(Math.random()-.5)*90)+'px';s.style.top=(y+(Math.random()-.5)*50)+'px';s.style.fontSize=(12+Math.random()*13)+'px';
-      document.body.appendChild(s);setTimeout(()=>s.remove(),900);
+
+  function progress(percent, label) {
+    let shell = document.querySelector('.progressShell');
+    if (!shell) {
+      shell = document.createElement('div');
+      shell.className = 'progressShell';
+      shell.innerHTML = '<div class="progressTop"><div class="progressText"></div><div class="progressTrack"><div class="progressBar"></div></div></div>';
+      document.body.prepend(shell);
     }
+    shell.querySelector('.progressText').textContent = `${label} • ${percent}%`;
+    requestAnimationFrame(() => shell.querySelector('.progressBar').style.width = `${percent}%`);
   }
-  let toastTimer;
-  function toast(msg){
-    let t=document.querySelector('.toast');
-    if(!t){t=document.createElement('div');t.className='toast';document.body.appendChild(t)}
-    t.textContent=msg;requestAnimationFrame(()=>t.classList.add('show'));
-    clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+
+  let fxCanvas, fxCtx, particles = [], raf = 0, lastFrame = 0;
+  function ensureCanvas() {
+    if (fxCanvas) return;
+    fxCanvas = document.createElement('canvas');
+    fxCanvas.className = 'fxCanvas';
+    document.body.appendChild(fxCanvas);
+    fxCtx = fxCanvas.getContext('2d');
+    resizeCanvas();
+    addEventListener('resize', resizeCanvas, { passive: true });
   }
-  function chime(type='soft'){
-    try{
-      const C=window.AudioContext||window.webkitAudioContext; if(!C) return;
-      const ctx=new C(); const now=ctx.currentTime; const notes=type==='big'?[523.25,659.25,783.99,1046.5]:[659.25,783.99];
-      notes.forEach((f,i)=>{const o=ctx.createOscillator();const g=ctx.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,now+i*.08);g.gain.linearRampToValueAtTime(type==='big'?.08:.045,now+i*.08+.02);g.gain.exponentialRampToValueAtTime(.001,now+i*.08+.48);o.connect(g).connect(ctx.destination);o.start(now+i*.08);o.stop(now+i*.08+.52)});
-      setTimeout(()=>ctx.close(),1000);
-    }catch(e){}
+  function resizeCanvas() {
+    if (!fxCanvas) return;
+    const dpr = Math.min(1.25, devicePixelRatio || 1);
+    fxCanvas.width = Math.round(innerWidth * dpr);
+    fxCanvas.height = Math.round(innerHeight * dpr);
+    fxCanvas.style.width = innerWidth + 'px';
+    fxCanvas.style.height = innerHeight + 'px';
+    fxCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
-  function progress(percent,label){
-    const shell=document.createElement('div');shell.className='progressShell';
-    shell.innerHTML=`<div class="progressTop"><div class="progressText">${label||'Kèo Trung Thu'} • ${percent}%</div><div class="progressTrack"><div class="progressBar" style="--progress:${percent}%"></div></div></div>`;
-    document.body.prepend(shell);
+  function loop(t) {
+    if (t - lastFrame < 28) { raf = requestAnimationFrame(loop); return; }
+    lastFrame = t;
+    fxCtx.clearRect(0, 0, innerWidth, innerHeight);
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.x += p.vx; p.y += p.vy; p.vy += p.gravity || 0; p.life -= p.decay;
+      if (p.spin) p.rot += p.spin;
+      if (p.life <= 0) { particles.splice(i, 1); continue; }
+      fxCtx.globalAlpha = Math.max(0, p.life);
+      fxCtx.save();
+      fxCtx.translate(p.x, p.y);
+      fxCtx.rotate(p.rot || 0);
+      if (p.type === 'dot') {
+        fxCtx.fillStyle = p.color;
+        fxCtx.beginPath(); fxCtx.arc(0, 0, p.size, 0, Math.PI * 2); fxCtx.fill();
+      } else {
+        fxCtx.font = `${p.size}px system-ui, Apple Color Emoji, Segoe UI Emoji`;
+        fxCtx.textAlign = 'center'; fxCtx.textBaseline = 'middle';
+        fxCtx.fillText(p.char, 0, 0);
+      }
+      fxCtx.restore();
+    }
+    fxCtx.globalAlpha = 1;
+    if (particles.length) raf = requestAnimationFrame(loop); else { cancelAnimationFrame(raf); raf = 0; }
   }
-  function selectionFX(el,msg){
-    const r=el.getBoundingClientRect(); sparkAt(r.left+r.width/2,r.top+r.height/2,12); chime(); if(msg) toast(msg);
+  function kick() { ensureCanvas(); if (!raf) raf = requestAnimationFrame(loop); }
+
+  function burst(count = 22, chars = ['💖','✨','🏮']) {
+    ensureCanvas();
+    const n = Math.min(count, 70);
+    for (let i = 0; i < n; i++) {
+      particles.push({
+        type: 'emoji', char: chars[i % chars.length],
+        x: innerWidth * (0.18 + Math.random() * 0.64), y: innerHeight * (0.55 + Math.random() * 0.18),
+        vx: (Math.random() - .5) * 4.2, vy: -2.5 - Math.random() * 4.2,
+        gravity: .055, life: 1, decay: .016 + Math.random() * .008,
+        size: 15 + Math.random() * 18, rot: 0, spin: (Math.random() - .5) * .08
+      });
+    }
+    if (particles.length > 220) particles.splice(0, particles.length - 220);
+    kick();
   }
-  function fireworks(duration=5200){
-    const canvas=document.createElement('canvas');canvas.className='fireworks';document.body.appendChild(canvas);const ctx=canvas.getContext('2d');let w,h,dpr,parts=[];
-    function size(){dpr=Math.min(2,window.devicePixelRatio||1);w=canvas.width=innerWidth*dpr;h=canvas.height=innerHeight*dpr;canvas.style.width=innerWidth+'px';canvas.style.height=innerHeight+'px';ctx.setTransform(dpr,0,0,dpr,0,0)} size();addEventListener('resize',size);
-    function boom(){const x=Math.random()*innerWidth,y=60+Math.random()*innerHeight*.52;const hue=Math.floor(Math.random()*360);for(let i=0;i<34;i++){const a=Math.random()*Math.PI*2,s=1.5+Math.random()*4.2;parts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,h:hue})}}
-    let last=0,start=performance.now();function frame(t){ctx.fillStyle='rgba(20,7,18,.16)';ctx.fillRect(0,0,innerWidth,innerHeight);if(t-last>420){boom();last=t}parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.025;p.vx*=.99;p.life-=.015;ctx.beginPath();ctx.arc(p.x,p.y,2.1,0,Math.PI*2);ctx.fillStyle=`hsla(${p.h},90%,70%,${Math.max(0,p.life)})`;ctx.fill()});parts=parts.filter(p=>p.life>0);if(t-start<duration)requestAnimationFrame(frame);else setTimeout(()=>canvas.remove(),700)}requestAnimationFrame(frame);
+
+  function sparkAt(x, y, count = 10) {
+    ensureCanvas();
+    const chars = ['✨','💖','⭐'];
+    for (let i = 0; i < Math.min(count, 18); i++) {
+      particles.push({
+        type: 'emoji', char: chars[i % chars.length], x, y,
+        vx: (Math.random() - .5) * 4, vy: -1 - Math.random() * 3,
+        gravity: .05, life: 1, decay: .03,
+        size: 12 + Math.random() * 12, rot: 0, spin: (Math.random() - .5) * .1
+      });
+    }
+    kick();
   }
-  window.LoveFX={burst,sparkAt,toast,chime,progress,selectionFX,fireworks};
+
+  function fireworks(ms = 2600) {
+    ensureCanvas();
+    const colors = ['#ffd166','#ff6b9a','#f8f3ff','#ff8c42','#7bdff2'];
+    const end = performance.now() + Math.min(ms, 4200);
+    let shots = 0;
+    const shoot = () => {
+      if (performance.now() > end || shots > 10) return;
+      shots++;
+      const x = innerWidth * (.15 + Math.random() * .7);
+      const y = innerHeight * (.12 + Math.random() * .38);
+      const color = colors[shots % colors.length];
+      for (let i = 0; i < 26; i++) {
+        const a = Math.PI * 2 * i / 26 + Math.random() * .12;
+        const s = 1.8 + Math.random() * 3.3;
+        particles.push({ type:'dot', x, y, vx:Math.cos(a)*s, vy:Math.sin(a)*s, gravity:.025, life:1, decay:.018, size:1.5+Math.random()*1.5, color, rot:0 });
+      }
+      if (particles.length > 220) particles.splice(0, particles.length - 220);
+      kick();
+      setTimeout(shoot, 260 + Math.random() * 220);
+    };
+    shoot();
+  }
+
+  function selectionFX(el, msg) {
+    const r = el.getBoundingClientRect();
+    sparkAt(r.left + r.width/2, r.top + r.height/2, 10);
+    chime();
+    if (msg) toast(msg);
+  }
+
+  function go(url, delay = 180) {
+    document.body.classList.add('pageLeaving');
+    setTimeout(() => location.href = url, delay);
+  }
+
+  window.LoveFX = { chime, toast, progress, burst, sparkAt, fireworks, selectionFX, go };
 })();

@@ -1,21 +1,12 @@
-# 🏮 Web rủ đi chơi Trung Thu
+# Web rủ đi chơi Trung Thu
 
-Bản Việt hóa từ template Valentine, chỉnh thành web rủ người ấy đi chơi Trung Thu.
+Bản tối ưu nhẹ cho GitHub Pages.
 
-## Cách đổi tên người ấy
-Mở `config.js` và sửa:
+- Người viết: nữ, xưng **em**.
+- Người nhận: nam, gọi **anh**.
+- Không dùng ảnh/GIF nặng.
+- Hiệu ứng chạy bằng một canvas tái sử dụng để giảm lag.
+- Nút từ chối né chuột/chạm.
+- Bước món ngọt bắt buộc chọn “Vị ngọt trên đôi môi em”.
 
-```js
-"partnerName": "Cậu",
-"nickname": "Cậu",
-```
-
-Ví dụ:
-
-```js
-"partnerName": "Linh",
-"nickname": "Linh",
-```
-
-## Đưa lên GitHub Pages
-Upload toàn bộ file trong thư mục này vào **root** của repository, sau đó vào **Settings → Pages → Deploy from a branch → main → /(root)**.
+Upload toàn bộ file ở thư mục gốc lên GitHub Pages.
