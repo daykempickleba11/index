@@ -186,3 +186,15 @@ html,body{
   100%{ transform: translateY(-110vh); opacity: 0; }
 }
 
+
+/* Nút “Hông” né chuột/chạm */
+#noButton.runaway{
+  position: fixed;
+  z-index: 10000;
+  margin: 0;
+  transition: left .10s ease, top .10s ease, transform .10s ease;
+  will-change: left, top;
+}
+#noButton.runaway:hover{
+  transform: rotate(-3deg) scale(1.02);
+}

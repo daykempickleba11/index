@@ -45,21 +45,68 @@
       const noButton = document.getElementById("noButton");
       const yesBtn = document.getElementById("yesBtn");
 
-      noButton.addEventListener("click", () => {
-        const current = parseFloat(getComputedStyle(yesBtn).fontSize);
-        yesBtn.style.fontSize = current + 4 + "px";
+      const noTexts = ["Hông 🙈", "Ê khoan 😳", "Bắt được tui đi 😝", "Hông nhaaa 🏃‍♀️", "Thôi bấm Đi chứ đi 🥹", "Hehe không cho bấm 😆"];
+      let dodgeCount = 0;
 
+      function burstIcons() {
         const icons = ["🏮", "🌕", "✨", "💖", "🥮"];
-        for (let i = 0; i < 7; i++) {
+        for (let i = 0; i < 5; i++) {
           const h = document.createElement("div");
           h.className = "floatHeart";
           h.textContent = icons[Math.floor(Math.random() * icons.length)];
           h.style.left = Math.random() * 100 + "vw";
           h.style.fontSize = 14 + Math.random() * 18 + "px";
-          h.style.animationDelay = Math.random() * 0.4 + "s";
+          h.style.animationDelay = Math.random() * 0.25 + "s";
           document.body.appendChild(h);
           setTimeout(() => h.remove(), 3500);
         }
+      }
+
+      function moveNoButton() {
+        const rect = noButton.getBoundingClientRect();
+        const pad = 16;
+        const maxX = Math.max(pad, window.innerWidth - rect.width - pad);
+        const maxY = Math.max(pad, window.innerHeight - rect.height - pad);
+
+        let x = pad + Math.random() * Math.max(1, maxX - pad);
+        let y = pad + Math.random() * Math.max(1, maxY - pad);
+
+        // Tránh nhảy đè trực tiếp lên nút Đồng ý
+        const yesRect = yesBtn.getBoundingClientRect();
+        let tries = 0;
+        while (tries < 12 && x < yesRect.right + 28 && x + rect.width > yesRect.left - 28 && y < yesRect.bottom + 28 && y + rect.height > yesRect.top - 28) {
+          x = pad + Math.random() * Math.max(1, maxX - pad);
+          y = pad + Math.random() * Math.max(1, maxY - pad);
+          tries++;
+        }
+
+        noButton.classList.add("runaway");
+        noButton.style.left = x + "px";
+        noButton.style.top = y + "px";
+        noButton.textContent = noTexts[Math.min(++dodgeCount, noTexts.length - 1)];
+
+        if (dodgeCount % 2 === 0) burstIcons();
+      }
+
+      // Máy tính: vừa dí chuột tới là chạy
+      noButton.addEventListener("pointerenter", moveNoButton);
+      noButton.addEventListener("mouseenter", moveNoButton);
+
+      // Điện thoại: vừa chạm là chạy, không kịp bấm
+      noButton.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        moveNoButton();
+      }, { passive: false });
+
+      // Nếu click lọt được thì vẫn né tiếp
+      noButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        moveNoButton();
+      });
+
+      // Khi resize/xoay màn hình, đưa nút về vùng nhìn thấy
+      window.addEventListener("resize", () => {
+        if (noButton.classList.contains("runaway")) moveNoButton();
       });
     </script>
   </body>
