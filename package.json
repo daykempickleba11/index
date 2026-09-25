@@ -1,0 +1,30 @@
+{
+  "name": "love-confession-website",
+  "version": "1.0.0",
+  "description": "💝 一个浪漫的爱心表白网站，专为告白而设计，包含精美动画和交互效果",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "start": "python -m http.server 8000",
+    "build": "echo 'Static site - no build required'",
+    "deploy": "echo 'Ready for deployment! Check README.md'"
+  },
+  "keywords": [
+    "love",
+    "confession",
+    "romantic",
+    "valentine",
+    "website",
+    "animation"
+  ],
+  "author": "Neilni2099",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Neilni2099/love-confession"
+  },
+  "homepage": "https://Neilni2099.github.io/love-confession",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

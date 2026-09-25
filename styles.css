@@ -1,0 +1,335 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+.heart-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.heart {
+    position: relative;
+    width: 100px;
+    height: 90px;
+    background: #ff0066;
+    transform: rotate(-45deg);
+    animation: heartbeat 2s infinite;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.heart:before,
+.heart:after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 90px;
+    background: #ff0066;
+    border-radius: 50%;
+}
+
+.heart:before {
+    top: -45px;
+    left: 0;
+}
+
+.heart:after {
+    left: 45px;
+    top: 0;
+}
+
+.heart:hover {
+    transform: rotate(-45deg) scale(1.2);
+    filter: drop-shadow(0 0 20px rgba(255, 0, 102, 0.8));
+}
+
+@keyframes heartbeat {
+    0% { transform: rotate(-45deg) scale(1); }
+    14% { transform: rotate(-45deg) scale(1.1); }
+    28% { transform: rotate(-45deg) scale(1); }
+    42% { transform: rotate(-45deg) scale(1.1); }
+    70% { transform: rotate(-45deg) scale(1); }
+}
+
+.heart-shadow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120px;
+    height: 110px;
+    background: rgba(255, 0, 102, 0.3);
+    transform: translate(-50%, -50%) rotate(-45deg);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+    z-index: -1;
+}
+
+@keyframes pulse {
+    0% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); opacity: 0.7; }
+    50% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.2); opacity: 0.3; }
+    100% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); opacity: 0.7; }
+}
+
+.message-container {
+    text-align: center;
+    color: white;
+    max-width: 600px;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    animation: fadeIn 1s ease-in-out 0.5s forwards;
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+.title {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.love-letters {
+    margin: 30px 0;
+}
+
+.letter {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 15px;
+    border-left: 4px solid #ff0066;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+}
+
+.letter.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.letter h2 {
+    color: #ff0066;
+    margin-bottom: 10px;
+    font-size: 1.3em;
+}
+
+.letter p {
+    line-height: 1.6;
+    margin: 5px 0;
+    font-size: 1.1em;
+}
+
+.reveal-btn {
+    background: linear-gradient(45deg, #ff0066, #ff4d94);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 0, 102, 0.4);
+    margin: 20px 0;
+}
+
+.reveal-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 0, 102, 0.6);
+}
+
+.reveal-btn:active {
+    transform: translateY(0);
+}
+
+.final-message {
+    display: none;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 40px;
+    border-radius: 20px;
+    margin-top: 30px;
+    animation: fadeInScale 1s ease-in-out;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.final-message h2 {
+    font-size: 2.5em;
+    color: #ff0066;
+    margin-bottom: 20px;
+    font-family: 'Ma Shan Zheng', cursive;
+}
+
+.final-message p {
+    font-size: 1.3em;
+    margin: 10px 0;
+    line-height: 1.8;
+}
+
+.floating-hearts {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.floating-heart {
+    position: absolute;
+    font-size: 2em;
+    animation: float 6s infinite;
+    opacity: 0.7;
+}
+
+.floating-heart:nth-child(1) {
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.floating-heart:nth-child(2) {
+    left: 30%;
+    animation-delay: 1.5s;
+}
+
+.floating-heart:nth-child(3) {
+    left: 50%;
+    animation-delay: 3s;
+}
+
+.floating-heart:nth-child(4) {
+    left: 70%;
+    animation-delay: 4.5s;
+}
+
+.floating-heart:nth-child(5) {
+    left: 90%;
+    animation-delay: 2s;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="white" opacity="0.3"/></svg>') repeat;
+    animation: twinkle 3s infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+}
+
+@media (max-width: 768px) {
+    .message-container {
+        margin: 20px;
+        padding: 30px 20px;
+    }
+    
+    .title {
+        font-size: 2em;
+    }
+    
+    .subtitle {
+        font-size: 1em;
+    }
+    
+    .heart {
+        width: 80px;
+        height: 72px;
+    }
+    
+    .heart:before,
+    .heart:after {
+        width: 80px;
+        height: 72px;
+    }
+    
+    .heart:before {
+        top: -36px;
+    }
+    
+    .heart:after {
+        left: 36px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 1.8em;
+    }
+    
+    .letter {
+        padding: 15px;
+    }
+    
+    .letter p {
+        font-size: 1em;
+    }
+}
